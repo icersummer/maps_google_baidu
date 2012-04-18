@@ -2,3 +2,6 @@ when you want to import the project into Eclipse:
 
 change project  --> .project
 change settings --> .settings
+
+
+It's because Git doesn't allow to submit the dot-leading-named files/folders (like .project, .settings) in every single repo root directory. But not for corresponding sub-folders.
