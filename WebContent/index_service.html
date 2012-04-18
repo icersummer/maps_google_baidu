@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>Baidu Map Sample</title>
+<script type="text/javascript" src="./jquery/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.3"></script>
+<style type="text/css">
+	html{height:100%}
+	body{height:100%; margin:0px; padding: 0px}
+	#map{height:100%}
+</style>
+<script type="text/javascript">
+  
+  $(document).ready(function(){
+  	  var map = new BMap.Map("map");
+  	  map.centerAndZoom(new BMap.Point(116.404, 39.915), 15);
+  	  map.addControl(new BMap.NavigationControl());
+  	  
+  	  //本地搜索服务
+  	  var local = new BMap.LocalSearch(map, {
+  		  renderOptions:{map: map}//还包含searchNearby, searchInBounds方法，提供周边搜索、范围搜索服务
+  	  });//这样会显示所有匹配的结果
+  	  local.search("天安门");
+  	  
+  	  //配置本地搜索结果
+  	  //显示8个结果，并根据结果点位置自动调整地图视野，不显示第一条结果的信息窗口
+  	  map.centerAndZoom(new BMap.Point(116.404, 39.915), 11);
+  	  local = new BMap.LocalSearch("北京市", {
+  		  renderOptions: {
+  			  map: map,
+  			  autoViewport: true,
+  			  selectFirstResult: false
+  		  }, pageCapacity: 8
+  	  });
+  	  local.search("中关村");
+  });
+
+  
+  
+</script>
+</head>
+<body >
+  <div id="map" ></div>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>Baidu Map Sample</title>
+<script type="text/javascript" src="./jquery/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.3"></script>
+<style type="text/css">
+html {
+	height: 100%
+}
+
+body {
+	height: 100%;
+	margin: 0px;
+	padding: 0px
+}
+
+#map {
+	height: 100%
+}
+</style>
+<script type="text/javascript">
+  
+</script>
+<script>
+function viewReportsList() {
+    document.MAINFORM.activity.value = 'REPORTS_LIST';
+    submitForm();
+}
+function PreferencesPopupPage() {
+    var windowopts = "location=no,scrollbars=no,menubars=no,toolbars=no,resizable=yes,left=8,top=8,width=350,height=500";
+    popup = open('/Windchill/rfa/jsp/main/Preferences.jsp', 'preferencesPopup', windowopts);
+    popup.focus();
+}
+function libraryPopupPage() {
+    var windowopts = "location=no,scrollbars=no,menubars=no,toolbars=no,resizable=yes,left=8,top=8,width=450,height=500";
+    popup = open('/Windchill/rfa/jsp/library/libraryMain.jsp', 'libraryPopup', windowopts);
+    popup.focus();
+}
+function OHCPopupPage() {
+    wcHomePage('/Windchill-FHC/');
+}
+function viewExecutiveDashboard(oid) {
+    document.MAINFORM.activity.value = 'EXECUTIVE_DASHBOARD_CRITERIA';
+    submitForm();
+}
+function toggleSideBar(image) {
+    var frmwidth = -1;
+    var frm = window.parent.document.getElementById('sidebarframe');
+    if (frm.scrollWidth) {
+        frmwidth = frm.scrollWidth;
+    }
+    if (frmwidth > 0) {
+        frmwidth = 0;
+        image.src = '/Windchill/netmarkets/images/show_nav2.png';
+    } else {
+        frmwidth = 250;
+        image.src = '/Windchill/netmarkets/images/hide_nav2.png';
+    }
+    var wString = frmwidth + ', *';
+    window.parent.document.getElementById('contentFrameSet').cols = wString;
+}
+function viewAbout() {
+    var w = window.open(urlContext + '/html/about/PTC_About_Box.txt');
+    w.document.charset = 'UTF-8';
+    w.history.go(0);
+}
+function checkSearchSubmit(navEvent) {
+    var enterKey = false;
+    if (window.event && window.event.keyCode == 13) {
+        enterKey = true;
+    }
+    if (navEvent && navEvent.which == 13) {
+        enterKey = true;
+    }
+    if (enterKey) {
+        doSearch();
+        return false;
+    }
+}
+function doSearch() {
+    var optionvalue;
+    optionvalue = document.MAINFORM.searchdropdown.options[document.MAINFORM.searchdropdown.selectedIndex].value;
+    document.MAINFORM.quickSearchCriteria.value = trim(document.MAINFORM.quickSearchCriteria.value);
+    addHiddenElement("filterId", " "); // REMOVE THE OLD DISPLAY ATTRIBUTE INPUT TO AVOID     // ISSUES WHEN SEARCHES ARE DONE FOR DIFFERETN OBJECTS     var oldDisplayAtt = $("displayAttribute");     if(oldDisplayAtt){         oldDisplayAtt.parentNode.removeChild(oldDisplayAtt);     }       var index = document.MAINFORM.elements.length;     displayAtt = document.createElement('input');     displayAtt.setAttribute("type", "HIDDEN");     displayAtt.setAttribute("name", "displayAttribute");     displayAtt.setAttribute("value", "name");     displayAtt.setAttribute("id", "displayAttribute");   if(optionvalue=="Keyword"){         indexSearch();  } else if(optionvalue=="Product"){         displayAtt.setAttribute("value", "productName");         document.MAINFORM.appendChild(displayAtt);   doProductSearch();  } else if(optionvalue=="Material"){         document.MAINFORM.appendChild(displayAtt);   doMaterialSearch();  } else if(optionvalue=="Document"){         document.MAINFORM.appendChild(displayAtt);   doDocumentSearch();  } else if(optionvalue=="Sku"){         displayAtt.setAttribute("value", "skuName");         document.MAINFORM.appendChild(displayAtt);   doSkuSearch();   }  else if(optionvalue=="Color"){         document.MAINFORM.appendChild(displayAtt);   doColorSearch();  }  else if(optionvalue=="Agent"){         document.MAINFORM.appendChild(displayAtt);   doAgentSearch();  }  else if(optionvalue=="BusinessObject"){         document.MAINFORM.appendChild(displayAtt);   doBusinessObjectSearch();  }  else if(optionvalue=="ChangeActivity"){         document.MAINFORM.appendChild(displayAtt);   doChangeActivitySearch();  }  else if(optionvalue=="Country"){         document.MAINFORM.appendChild(displayAtt);   doCountrySearch();  }  else if(optionvalue=="DocumentCollection"){         document.MAINFORM.appendChild(displayAtt);   doDocumentCollectionSearch();  }  else if(optionvalue=="Factory"){         document.MAINFORM.appendChild(displayAtt);   doFactorySearch();  }  else if(optionvalue=="Last"){         document.MAINFORM.appendChild(displayAtt);   doLastSearch();  }  else if(optionvalue=="Media"){         document.MAINFORM.appendChild(displayAtt);   doMediaSearch();  }  else if(optionvalue=="OrderConfirmation"){         document.MAINFORM.appendChild(displayAtt);   doOrderConfirmationSearch();  }  else if(optionvalue=="OrderConfirmation/Product"){         document.MAINFORM.appendChild(displayAtt);   doOrderConfirmationSearch('OrderConfirmation/Product');  }  else if(optionvalue=="Palette"){         document.MAINFORM.appendChild(displayAtt);   doPaletteSearch();  }  else if(optionvalue=="RFQ"){         document.MAINFORM.appendChild(displayAtt);   doRFQSearch();  }  else if(optionvalue=="Sample"){         document.MAINFORM.appendChild(displayAtt);   doSampleSearch();  }  else if(optionvalue=="Sample/Material"){         document.MAINFORM.appendChild(displayAtt);   doSampleSearch('Sample/Material');  }  else if(optionvalue=="Sample/Product"){         document.MAINFORM.appendChild(displayAtt);   doSampleSearch('Sample/Product');  }  else if(optionvalue=="Season"){         document.MAINFORM.appendChild(displayAtt);   doSeasonSearch();  }  else if(optionvalue=="Supplier"){         document.MAINFORM.appendChild(displayAtt);   doSupplierSearch();  } else if(optionvalue=="Placeholder"){         displayAtt.setAttribute("value", "placeholderName");         document.MAINFORM.appendChild(displayAtt);   doPlaceholderSearch();  }  }   function doColorSearch(){  var criteria = document.MAINFORM.quickSearchCriteria.value;       if(hasContent(criteria)){   document.MAINFORM.activity.value = 'FIND_COLOR';   document.MAINFORM.action.value = 'SEARCH';   document.MAINFORM.type.value = 'OR:com.lcs.wc.flextype.FlexType:107069';   submitForm();  } }function doAgentSearch(){  var criteria = document.MAINFORM.quickSearchCriteria.value;       if(hasContent(criteria)){   document.MAINFORM.activity.value = 'FIND_AGENT';   document.MAINFORM.action.value = 'SEARCH';   document.MAINFORM.type.value = 'OR:com.lcs.wc.flextype.FlexType:107057';   submitForm();  } }function doBusinessObjectSearch(){  var criteria = document.MAINFORM.quickSearchCriteria.value;       if(hasContent(criteria)){   document.MAINFORM.activity.value = 'FIND_CONTROLLED_BUSINESS_OBJECT';   document.MAINFORM.action.value = 'SEARCH';   document.MAINFORM.type.value = 'OR:com.lcs.wc.flextype.FlexType:107145';   submitForm();  } }function doChangeActivitySearch(){  var criteria = document.MAINFORM.quickSearchCriteria.value;       if(hasContent(criteria)){   document.MAINFORM.activity.value = 'FIND_CHANGEACTIVITY';   document.MAINFORM.action.value = 'SEARCH';   document.MAINFORM.type.value = 'OR:com.lcs.wc.flextype.FlexType:107060';   submitForm();  } }function doCountrySearch(){  var criteria = document.MAINFORM.quickSearchCriteria.value;       if(hasContent(criteria)){   document.MAINFORM.activity.value = 'FIND_COUNTRY';   document.MAINFORM.action.value = 'SEARCH';   document.MAINFORM.type.value = 'OR:com.lcs.wc.flextype.FlexType:107072';   submitForm();  } }function doDocumentCollectionSearch(){  var criteria = document.MAINFORM.quickSearchCriteria.value;       if(hasContent(criteria)){   document.MAINFORM.activity.value = 'FIND_DOCUMENTCOLLECTION';   document.MAINFORM.action.value = 'SEARCH';   document.MAINFORM.type.value = 'OR:com.lcs.wc.flextype.FlexType:107078';   submitForm();  } }function doFactorySearch(){  var criteria = document.MAINFORM.quickSearchCriteria.value;       if(hasContent(criteria)){   document.MAINFORM.activity.value = 'FIND_FACTORY';   document.MAINFORM.action.value = 'SEARCH';   document.MAINFORM.type.value = 'OR:com.lcs.wc.flextype.FlexType:107106';   submitForm();  } }function doLastSearch(){  var criteria = document.MAINFORM.quickSearchCriteria.value;       if(hasContent(criteria)){   document.MAINFORM.activity.value = 'FIND_LAST';   document.MAINFORM.action.value = 'SEARCH';   document.MAINFORM.type.value = 'OR:com.lcs.wc.flextype.FlexType:107084';   submitForm();  } }function doMediaSearch(){  var criteria = document.MAINFORM.quickSearchCriteria.value;       if(hasContent(criteria)){   document.MAINFORM.activity.value = 'FIND_MEDIA';   document.MAINFORM.action.value = 'SEARCH';   document.MAINFORM.type.value = 'OR:com.lcs.wc.flextype.FlexType:107140';   submitForm();  } }function doPaletteSearch(){  var criteria = document.MAINFORM.quickSearchCriteria.value;       if(hasContent(criteria)){   document.MAINFORM.activity.value = 'FIND_PALETTE';   document.MAINFORM.action.value = 'SEARCH';   document.MAINFORM.type.value = 'OR:com.lcs.wc.flextype.FlexType:107087';   submitForm();  } }function doRFQSearch(){  var criteria = document.MAINFORM.quickSearchCriteria.value;       if(hasContent(criteria)){   document.MAINFORM.activity.value = 'FIND_RFQ';   document.MAINFORM.action.value = 'SEARCH';   document.MAINFORM.type.value = 'OR:com.lcs.wc.flextype.FlexType:107194';   submitForm();  } }function doSampleSearch(typePath){  var criteria = document.MAINFORM.quickSearchCriteria.value;       if(hasContent(criteria)){   document.MAINFORM.activity.value = 'FIND_SAMPLE';   document.MAINFORM.action.value = 'SEARCH';                 if(hasContent(typePath)){                     if(typePath == 'Sample/Material'){                         document.MAINFORM.type.value = 'OR:com.lcs.wc.flextype.FlexType:107984';                     }else if(typePath == 'Sample/Product'){                         document.MAINFORM.type.value = 'OR:com.lcs.wc.flextype.FlexType:107989';                     }                 }else{                     document.MAINFORM.type.value = 'OR:com.lcs.wc.flextype.FlexType:107165';                 }   submitForm();  } }function doSeasonSearch(){  var criteria = document.MAINFORM.quickSearchCriteria.value;       if(hasContent(criteria)){   document.MAINFORM.activity.value = 'FIND_SEASON';   document.MAINFORM.action.value = 'SEARCH';   document.MAINFORM.type.value = 'OR:com.lcs.wc.flextype.FlexType:107097';   submitForm();  } }function doSupplierSearch(){  var criteria = document.MAINFORM.quickSearchCriteria.value;       if(hasContent(criteria)){   document.MAINFORM.activity.value = 'FIND_SUPPLIER';   document.MAINFORM.action.value = 'SEARCH';   document.MAINFORM.type.value = 'OR:com.lcs.wc.flextype.FlexType:107103';   submitForm();  } }    function doSkuSearch(){  var criteria = document.MAINFORM.quickSearchCriteria.value;       if(hasContent(criteria)){   document.MAINFORM.activity.value = 'FIND_SKU';   document.MAINFORM.action.value = 'SEARCH';   document.MAINFORM.type.value = 'OR:com.lcs.wc.flextype.FlexType:107092';   submitForm();  } }  function doPlaceholderSearch(){  var criteria = document.MAINFORM.quickSearchCriteria.value;       if(hasContent(criteria)){   document.MAINFORM.activity.value = 'FIND_PLACEHOLDER';   document.MAINFORM.action.value = 'SEARCH';   document.MAINFORM.type.value = 'OR:com.lcs.wc.flextype.FlexType:107092';   submitForm();  } } function doProductSearch(){  var criteria = document.MAINFORM.quickSearchCriteria.value;     if(hasContent(criteria)){   document.MAINFORM.activity.value = 'FIND_PRODUCT';   document.MAINFORM.action.value = 'SEARCH';   document.MAINFORM.type.value = 'OR:com.lcs.wc.flextype.FlexType:107092';   submitForm();  } }   function doOrderConfirmationSearch(typePath){  var criteria = document.MAINFORM.quickSearchCriteria.value;     if(hasContent(criteria)){   document.MAINFORM.activity.value = 'FIND_ORDER_CONFIRMATION';   document.MAINFORM.action.value = 'SEARCH';                 if(hasContent(typePath)){                     if(typePath == 'OrderConfirmation/Product'){                         document.MAINFORM.type.value = 'OR:com.lcs.wc.flextype.FlexType:107876';                     }                 }else{                     document.MAINFORM.type.value = 'OR:com.lcs.wc.flextype.FlexType:107191';                 }    submitForm();  } }    function doMaterialSearch(){  var criteria = document.MAINFORM.quickSearchCriteria.value;      if(hasContent(criteria)){    document.MAINFORM.activity.value = 'FIND_ADVANCED_MATERIAL';   document.MAINFORM.action.value = 'SEARCH';   document.MAINFORM.type.value = 'OR:com.lcs.wc.flextype.FlexType:107134';   submitForm();  } }  function doDocumentSearch(){  var criteria = document.MAINFORM.quickSearchCriteria.value;      if(hasContent(criteria)){   document.MAINFORM.activity.value = 'FIND_DOCUMENT';   document.MAINFORM.action.value = 'SEARCH';   document.MAINFORM.type.value = 'OR:com.lcs.wc.flextype.FlexType:107075';   submitForm();  } }  function indexSearch(){     if (validate_keyword()) {         document.MAINFORM.activity.value = 'INDEX_SEARCH';         document.MAINFORM.action.value = 'SEARCH';         document.MAINFORM.globalSearch.value = 'true';         document.MAINFORM.headerIndexSearchKeyword.value = document.MAINFORM.quickSearchCriteria.value;         document.MAINFORM.quickSearchCriteria.value = '';         submitForm();     } }  function validate_keyword() {     if (trim(document.MAINFORM.quickSearchCriteria.value) == "*") {         alert('A value of \'*\' is not valid, please enter a prefix/suffix to the \'*\' operator');         return false;     } else if (trim(document.MAINFORM.quickSearchCriteria.value) == "") {         alert('An empty value when performing a keyword search is not valid, please enter some criteria to limit the search results');         return false;     }     return true; }  function handleChangeSearchDropDown(){     var dropDown = $('searchDropDownSelect');      var searchButton = $('searchButton');     var newIcon = $('newObjectIcon');      var value = dropDown.options[dropDown.selectedIndex].value;     if(value == 'Sku' || value == 'Sample' || value == 'Sample/Material' || value == 'Sample/Product'|| value == 'Placeholder'){         newIcon.style.display = 'none';         // Add space to the right of search   margin-right:25px;         searchButton.style.marginRight = "33px";              } else {         newIcon.style.display = 'block';         // Reset space on right of search to  margin-right:5px;         searchButton.style.marginRight = "5px";              }     document.MAINFORM.quickSearchCriteria.focus();     document.MAINFORM.quickSearchCriteria.select(); }
+    
+</script>
+}
+</head>
+<body>
+	<div id="map"></div>
+</body>
+</html>

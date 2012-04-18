@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>Baidu Map Sample</title>
+<script type="text/javascript" src="./jquery/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.3"></script>
+<style type="text/css">
+	html{height:100%}
+	body{height:100%; margin:0px; padding: 0px}
+	#map{height:100%}
+</style>
+<script type="text/javascript">
+  $(document).ready(function(){
+	  
+	  alert('test : ' + encodeURI("的") + ', %28 = ' + unescape("%2C"));
+	  
+	  var map = new BMap.Map('map');
+	  var point_bj = new BMap.Point(116.404, 39.915);
+	  var point_sh = new BMap.Point(121.491, 31.233);
+	  map.centerAndZoom(point_bj, 15);//shanghai, 121.491, 31.233; beijing, 116.404, 39.915
+	  
+	  map.addControl(new BMap.NavigationControl());//平移缩放控件，默认左上方
+	  map.addControl(new BMap.OverviewMapControl());//缩略地图控件，默认右下方
+	  map.addControl(new BMap.ScaleControl());//比例尺控件，默认左下方
+	  //map.addControl(new BMap.CopyrightControl());//版权控件,默认baidu已经添加了，无需手动
+	  map.addControl(new BMap.MapTypeControl());//地图类型控件
+	  map.setCurrentCity("北京");//不知用途
+	  
+	  window.setTimeout(function(){
+		  map.panTo(point_sh);//panTo()方法将让地图平滑移动至新中心点；如果移动距离超过了当前地图区域大小，则地图会直接跳到该点。
+	  }, 2000);
+  }); 
+  function generateFloatLayer(){
+	  floatArea=document.getElementById("popup");
+	  floatArea.style.display="none";
+	  divClose='<div id="close" style="position:absolute; right:10px; top:10px; left:auto; bottom:auto;"><a href="javascript:closeFloat();">X</a></div><br>';
+	  x=event.clientX + document.body.scrollLeft;
+	  y=event.clientY + document.body.scrollTop;
+	  floatArea.innerHTML=divClose+"<div id=\"floatcontent\">some content</div>";
+	  floatArea.style.border="black 1px solid";
+	  floatArea.style.left=(document.documentElement.scrollLeft+x-15)+"px";
+	  floatArea.style.top=(document.documentElement.scrollTop+y-0)+"px";
+	  floatArea.style.width="300px";
+	  floatArea.style.height="300px";
+	  floatArea.style.display="";
+	 }
+
+	 function closeFloat(){
+	  floatArea=document.getElementById("popup");
+	  floatArea.innerHTML="";
+	  floatArea.style.display="none";
+	 }
+</script>
+</head>
+<body >
+  <div id="wer" ><a onclick="javascript:generateFloatLayer()">点击生成浮动层</a></div>
+  <div id="map" ></div>
+  <div id="sdfdsf" >werwer</div>
+  <div id="popup" style="position:absolute; z-index:100; display:none; background-color:#eeeeee">aa</div>
+</body>
+</html>

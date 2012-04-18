@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>Baidu Map Sample</title>
+<script type="text/javascript" src="./jquery/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.3"></script>
+<style type="text/css">
+	html{height:100%}
+	body{height:100%; margin:0px; padding: 0px}
+	#map{height:100%}
+</style>
+<script type="text/javascript">
+  
+  $(document).ready(function(){
+  	  var map = new BMap.Map("map");
+  	  map.centerAndZoom(new BMap.Point(116.404, 39.915), 11);
+  	  
+  	  //通过回调函数onSearchComplete得到第一页每条结果的标题和地址信息
+  	  var options = {
+  		onSearchComplete: function(results){
+  			if (local.getStatus() == BMAP_STATUS_SUCCESS){
+  				var s = [];
+  				for (var i=0; i<results.getCurrentNumPois(); i++){
+  					s.push(results.getPoi(i).title +", " + results.getPoi(i).address);
+  				}
+  				$("#log").html(s.join(" ;\r\n "));//document.getElementById("log").innerHTML = s.join(" ； ");
+  			}
+  		}	  
+  	  };  	  
+  	  var local = new BMap.LocalSearch(map, options);
+  	  local.search("公园");  	  
+  	  
+  });
+
+  
+  
+</script>
+</head>
+<body >
+  <div id="log">公园结果</div>
+  <div id="map" ></div>
+  
+</body>
+</html>

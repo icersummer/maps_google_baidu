@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>Baidu Map Sample</title>
+<script type="text/javascript" src="./jquery/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.3"></script>
+<style type="text/css">
+	html{height:100%}
+	body{height:100%; margin:0px; padding: 0px}
+	#map{height:100%}
+</style>
+<script type="text/javascript">
+  
+  $(document).ready(function(){
+  	  var map = new BMap.Map('map');
+	  var point_bj = new BMap.Point(116.404, 39.915);
+	  var point_sh = new BMap.Point(121.491, 31.233);
+	  map.centerAndZoom(point_bj, 15);
+	  
+	  var marker = new BMap.Marker(point_bj);
+	  marker.addEventListener("click", function(){alert("you clicked marker.");});
+	  map.addOverlay(marker);
+	  
+	  //创建并打开信息窗口
+	  var opts = {width: 250, height: 100, title: "Hello"};
+	  var infoWindow = new BMap.InfoWindow("World", opts);
+	  map.openInfoWindow(infoWindow, map.getCenter());
+	  
+	  var polyline = new BMap.Polyline([
+	                          new BMap.Point(116.399, 39.910),
+	                          new BMap.Point(116.405, 39.920)
+	                       ],
+	                       {strokeColor:"blue", strokeWeight:6, strokeOpacity:0.5});
+	  map.addOverlay(polyline);
+	  
+	  //为整个地图添加事件
+	  //map.addEventListener("click", function(){alert("您点击了地图。");});
+	  
+  });
+
+  
+  
+</script>
+</head>
+<body >
+  <div id="map" ></div>
+</body>
+</html>

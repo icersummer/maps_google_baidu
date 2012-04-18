@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>Baidu Map Sample</title>
+<script type="text/javascript" src="./jquery/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.3"></script>
+<style type="text/css">
+	html{height:100%}
+	body{height:100%; margin:0px; padding: 0px}
+	#map{height:100%}
+</style>
+<script type="text/javascript">
+  
+  $(document).ready(function(){
+  	  var map = new BMap.Map("map");
+  	  map.centerAndZoom(new BMap.Point(116.404, 39.915), 15);
+  	  map.addControl(new BMap.NavigationControl());
+  	  //创建并添加交通流量图层； 目前百度地图只提供了这一个默认图层
+  	  var traffic = new BMap.TrafficLayer();
+  	  map.addTileLayer(traffic);//移除图层，使用 map.removeTileLayer(traffic).	  
+  });
+
+  
+  
+</script>
+</head>
+<body >
+  <div id="map" ></div>
+</body>
+</html>

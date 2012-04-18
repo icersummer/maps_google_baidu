@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>Baidu Map Sample</title>
+<script type="text/javascript" src="./jquery/jquery-1.7.1.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.3"></script>
+<style type="text/css">
+	html{height:100%}
+	body{height:100%; margin:0px; padding: 0px}
+	#container{height:100%}
+</style>
+<script type="text/javascript">
+	$(document).ready(function(){
+		var map = new BMap.Map("container");
+		var point_bj = new BMap.Point(116.404, 39.915);
+		map.centerAndZoom(point_bj, 15);
+		
+		var p1 = new BMap.Point(116.380967, 39.913285);
+		var p2 = new BMap.Point(116.424374, 39.914668);
+		var rushan_rd_start = new BMap.Point(121.522771,31.239028);
+		var rushan_rd_end = new BMap.Point(121.541739,31.246287);
+		
+		p1 = rushan_rd_start;
+		p2 = rushan_rd_end;
+		
+		//necessary ?
+		var driving2 = new BMap.DrivingRoute(map, {renderOptions:{map: map, autoViewport: true}}); //驾车实例
+		driving2.search(p1, p2);		
+		
+		function run(){
+			var driving = new BMap.DrivingRoute(map);
+			driving.search(p1, p2);
+			driving.setSearchCompleteCallback(function(){
+				var pts = driving.getResults().getPlan(0).getRoute(0).getPath();//get Points array
+				var paths = pts.length;			
+				
+				var carMk = new BMap.Marker(pts[0]);
+				map.addOverlay(carMk);
+				
+				i=0;
+				function resetMkPoint(i){
+					carMk.setPosition(pts[i]);
+					if(i < paths){
+						setTimeout(function(){
+							i++;
+							resetMkPoint(i);
+						}, 600);
+					}
+				}
+				
+				setTimeout(function(){
+					resetMkPoint(5);
+					console.log(i);
+				}, 100);
+			});
+		};
+		
+		run();
+		
+	});
+</script>
+</head>
+<body >
+  <div id="log">youk</div>
+  <div id="container" ></div>
+</body>
+</html>
